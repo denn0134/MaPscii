@@ -190,7 +190,7 @@ public class MaPsciiForm extends Application
     {
         @Override
         public void handleException(Exception exc) {
-
+            System.out.println(exc.getMessage());
         }
     }
 }

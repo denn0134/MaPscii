@@ -22,6 +22,38 @@ public class MaPsciiSquare extends MaPsciiTile
         super(x, y);
     }
 
+    /***
+     * Get the character to use for
+     * the horizontal border of the tile.
+     * @param pass The render pass.
+     * @return Returns the horizontal
+     *         border character.
+     */
+    private char hBorder(RenderPass pass){
+        return (pass == RenderPass.RP_STANDARD) ? GDASH : GBLANK;
+    }
+
+    /***
+     * Get the character to use for
+     * the vertical border of the tile.
+     * @param pass The render pass.
+     * @return Returns the vertical
+     *         border character.
+     */
+    private char vBorder(RenderPass pass){
+        return (pass == RenderPass.RP_STANDARD) ? GBAR : GBLANK;
+    }
+
+    /***
+     * Get the character to use for
+     * the corner border of the tile.
+     * @param pass The render pass.
+     * @return Returns the corner character.
+     */
+    private char cBorder(RenderPass pass){
+        return (pass == RenderPass.RP_STANDARD) ? GPLUS : GBLANK;
+    }
+
     @Override
     public int calcWidth(int scale) {
         if(scale == 1){
@@ -76,24 +108,26 @@ public class MaPsciiSquare extends MaPsciiTile
     }
 
     @Override
-    protected String renderLine(int scale, int line) {
+    protected String renderLine(int scale, int line, RenderPass pass) {
         int w = calcWidth(scale);
         boolean tb = isTopOrBottom(scale, line);
         StringBuilder sb = new StringBuilder(w);
 
         //render the line
-        char pix = (tb) ? GPLUS : GBAR;
+        char pix, hpix;
+        pix = (tb) ? cBorder(pass) : vBorder(pass);
+        hpix = hBorder(pass);
 
         sb.append(pix);
 
         if(tb){
             for(int i = 1; i < w - 1; i++){
-                sb.append(GDASH);
+                sb.append(hpix);
             }//end for i
         }//end if
         else{
             //render the interior
-            sb.append(renderInterior(scale, line));
+            sb.append(renderInterior(scale, line, pass));
         }//end else
 
         sb.append(pix);
@@ -102,7 +136,7 @@ public class MaPsciiSquare extends MaPsciiTile
     }
 
     @Override
-    protected String renderInterior(int scale, int line) {
+    protected String renderInterior(int scale, int line, RenderPass pass) {
         int w = calcWidth(scale);
         StringBuilder sb = new StringBuilder(w);
 

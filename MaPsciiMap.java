@@ -263,10 +263,17 @@ public class MaPsciiMap
                         //can be rendered
                         if (xOverlap && yOverlap) {
                             RenderTile rt = new RenderTile(t, mapVector, dv);
-                            if (t.getIsNullTile())
-                                renderList.add(preIndex++, rt);
-                            else
-                                renderList.add(rt);
+
+                            switch(t.getRenderPass()){
+                                case RP_NULL:
+                                    renderList.add(preIndex++, rt);
+                                    break;
+                                case RP_NO_BORDER:
+                                    renderList.add(preIndex, rt);
+                                    break;
+                                case RP_STANDARD:
+                                    renderList.add(rt);
+                            }//end switch
                         }//end if
                     }//end if
                 }//end for j
@@ -376,7 +383,7 @@ public class MaPsciiMap
 
         //first get the text to be
         //rendered from the tile
-        String rawLine = rt.tile.renderLine(scale, tileLine);
+        String rawLine = rt.tile.renderLine(scale, tileLine, rt.tile.getRenderPass());
 
         //calculate the offset for the tile
         int tileOffset = rt.tile.calcRenderOffset(scale, tileLine);

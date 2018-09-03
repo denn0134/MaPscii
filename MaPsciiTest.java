@@ -13,7 +13,7 @@ public class MaPsciiTest
         int h = square.calcHeight(scale);
 
         for(int i = 0; i < h; i++){
-            System.out.println(square.renderLine(scale, i));
+            System.out.println(square.renderLine(scale, i, square.getRenderPass()));
         }//end for i
 
         MaPsciiGrid grid = new MaPsciiGrid();

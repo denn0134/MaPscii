@@ -18,6 +18,14 @@ public abstract class MaPsciiTile
         TOP, RIGHT, BOTTOM, LEFT
     }
 
+    /***
+     * Enumeration of the render pass
+     * types.
+     */
+    public enum RenderPass{
+        RP_NULL, RP_NO_BORDER, RP_STANDARD
+    }
+
     //glyph constants
     protected static final char GBLANK = ' ';
     protected static final char GPLUS = '+';
@@ -78,6 +86,19 @@ public abstract class MaPsciiTile
     {
         x = value.x;
         y = value.y;
+    }
+
+    /***
+     * Property: RenderPass
+     * The render that this tile
+     * should be rendered in.
+     */
+    private RenderPass renderPass;
+    public RenderPass getRenderPass() {
+        return renderPass;
+    }
+    public void setRenderPass(RenderPass renderPass) {
+        this.renderPass = renderPass;
     }
 
     /***
@@ -207,7 +228,8 @@ public abstract class MaPsciiTile
      *         ASCII graphic text.
      */
     protected abstract String renderLine(int scale,
-                                      int line);
+                                         int line,
+                                         RenderPass pass);
 
     /***
      * Renders the interior of the tile
@@ -221,7 +243,9 @@ public abstract class MaPsciiTile
      * @return Returns the rendered line of
      *         ASCII graphic text.
      */
-    protected abstract String renderInterior(int scale, int line);
+    protected abstract String renderInterior(int scale,
+                                             int line,
+                                             RenderPass pass);
 
     /***
      * Calculates the number of null

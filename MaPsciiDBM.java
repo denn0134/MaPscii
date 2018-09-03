@@ -21,8 +21,11 @@ public class MaPsciiDBM
     private static final String FN_MT_TILE_Y = "TILE_Y";
     private static final String FN_MT_MAP_X = "MAP_X";
     private static final String FN_MT_MAP_Y = "MAP_Y";
+    private static final String FN_MT_RENDER = "RENDER_PASS";
 
-    private enum TILE_CLASSES{MaPsciiSquare, NullSquare};
+    private enum TILE_CLASSES{
+        MaPsciiSquare
+    }
 
     //SQL for loading the map tiles
     //for a given map ID
@@ -165,7 +168,9 @@ public class MaPsciiDBM
                 }//end if
             }//end while
         }//end try
-        catch(SQLException sqle){}//end sqle
+        catch(SQLException sqle){
+            handler.handleException(sqle);
+        }//end sqle
     }
 
     /***
@@ -191,6 +196,9 @@ public class MaPsciiDBM
             retTile.setGuid(rs.getString(FN_MT_GUID));
             retTile.setX(rs.getInt(FN_MT_TILE_X));
             retTile.setY(rs.getInt(FN_MT_TILE_Y));
+
+            String pass = rs.getString(FN_MT_RENDER);
+            retTile.setRenderPass(MaPsciiTile.RenderPass.valueOf(pass));
         }//end if
 
         return retTile;
@@ -207,8 +215,6 @@ public class MaPsciiDBM
         switch (classType){
             case MaPsciiSquare:
                 return new MaPsciiSquare();
-            case NullSquare:
-                return new NullSquare();
             default:
                 return null;
         }//end switch
